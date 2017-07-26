@@ -19,11 +19,8 @@ unsigned long previousMillis = 0;
 int interval = 100;
 const int d = 0;
 int count = 0;
-
-
 String inputString = "";         // a string to hold incoming data
 boolean stringComplete = false;  // whether the string is complete
-
 
 void setupRobot(void) {
   Serial.begin(9600);
@@ -35,14 +32,15 @@ void setupRobot(void) {
   pinMode(rightMotorDirection, OUTPUT);
   pinMode(rightMotorSpeed, OUTPUT);
 }
+
 void setup() {
   strip.begin();
   strip.show();
   setupRobot();
   inputString.reserve(200);
 }
-void loop() {
 
+void loop() {
   while (Serial1.available()) {
     // get the new byte:
     char inChar = (char)Serial1.read();
@@ -54,8 +52,6 @@ void loop() {
       stringComplete = true;
     }
   }
-
-
   if (stringComplete) {
     Serial.println(inputString);
     // clear the string:
@@ -79,6 +75,7 @@ void loop() {
     }
   }
 }
+
 void goForward(int d) {
   analogWrite(leftMotorSpeed, straightSpeed);
   digitalWrite(leftMotorDirection, HIGH);
@@ -86,32 +83,37 @@ void goForward(int d) {
   digitalWrite(rightMotorDirection, HIGH);
   delay(d);
 }
-void turnLeft(int d) {
-  analogWrite(leftMotorSpeed, turnSpeed);
-  digitalWrite(leftMotorDirection, LOW);
-  analogWrite(rightMotorSpeed, turnSpeed);
-  digitalWrite(rightMotorDirection, HIGH);
-  delay (d);
-}
+
 void goBackward(int d) {
   analogWrite(leftMotorSpeed, straightSpeed);
   digitalWrite(leftMotorDirection, LOW);
   analogWrite(rightMotorSpeed, straightSpeed);
   digitalWrite(rightMotorDirection, LOW);
-  delay (d);
+  delay(d);
 }
+
+void turnLeft(int d) {
+  analogWrite(leftMotorSpeed, turnSpeed);
+  digitalWrite(leftMotorDirection, LOW);
+  analogWrite(rightMotorSpeed, turnSpeed);
+  digitalWrite(rightMotorDirection, HIGH);
+  delay(d);
+}
+
 void turnRight(int d) {
   analogWrite(leftMotorSpeed, turnSpeed);
   digitalWrite(leftMotorDirection, HIGH);
   analogWrite(rightMotorSpeed, turnSpeed);
   digitalWrite(rightMotorDirection, LOW);
-  delay (d);
+  delay(d);
 }
+
 void stopMotors(int d) {
   analogWrite(leftMotorSpeed, 0);
   analogWrite(rightMotorSpeed, 0);
-  delay (d);
+  delay(d);
 }
+
 void findRoute(int d) {
   goBackward(200);
   count++;
